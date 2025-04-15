@@ -1,19 +1,25 @@
 import express, { Request, Response } from 'express';
 import mongoose from "mongoose"
-import { Food } from './schema/food';
+import { Food } from './schema/Food';
+
 
 const app = express();
 
 const port = 8080;
 app.use(express.json());
 
-app.get('/', (req: Request, res: Response) => {
-    res.json({ message: "hello" });
-})
+// app.get('/food', (req: Request, res: Response) => {
+//     // res.json({ message: "hello" });
+// })
 app.post('/food', async (req, res) => {
     const food = await Food.create(req.body)
     console.log(req.body);
-    res.json({ sucess: true })
+    res.json({ sucess: true, food })
+});
+
+app.get('/food', async (_req, res) => {
+    const foods = await Food.find();
+    res.json({ success: true, foods });
 });
 
 app.listen(port, async () => {
